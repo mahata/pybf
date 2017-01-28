@@ -18,7 +18,6 @@
 import sys
 
 
-# README: I'm making a mistake because there should be ProgramCounter and DataPointer
 class BF(object):
     def __init__(self, src):
         self.__pc = 0
@@ -41,10 +40,10 @@ class BF(object):
 
     def comma(self):
         c = ord(sys.stdin.read(1))
-        self.__tape[self.__pc] = c
+        self.__tape[self.__tp] = c
 
     def period(self):
-        sys.stdout.write(chr(self.__tape[self.__pc]))
+        sys.stdout.write(chr(self.__tape[self.__tp]))
         sys.stdout.flush()
 
     def lbracket(self):
@@ -52,7 +51,11 @@ class BF(object):
             self.__pc = self.__bracket_pairs[self.__pc]
 
     def rbracket(self):
-        # Dumb
+        # Just move forward
+        if self.__tape[self.__tp] == 0:
+            return
+
+        # Jump back - Dumb implementation
         for key in self.__bracket_pairs:
             if self.__bracket_pairs[key] == self.__pc:
                 self.__pc = key
@@ -78,12 +81,9 @@ class BF(object):
             elif code == ']':
                 self.__bracket_pairs[parse_stack.pop()] = idx
 
-        # print(self.__bracket_pairs)
-
         # 2.
         while True:
             code = self.__src[self.__pc]
-            print(self.__pc, code, self.__tp)
 
             if code == '>':
                 self.gt()

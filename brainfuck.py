@@ -9,7 +9,7 @@
 # ,  : Read a character from stdin, and write it to the current cell.
 # .  : Print the character in the current cell.
 # [  : If the value in the current cell is greater than 0, go read the next instruction else jump to the closing “]”.
-# ]  : Jump to the opening “[“.
+# ]  : If the value in the current cell equals 0, move forward. Jump to the opening “[“ otherwise.
 
 # Hello World!
 # ++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.
@@ -71,37 +71,37 @@ class BF(object):
 
         # 1.
         parse_stack = []
-        for idx, cell in enumerate(self.__src):
+        for idx, code in enumerate(self.__src):
             pass
-            if cell == '[':
+            if code == '[':
                 parse_stack.append(idx)
-            elif cell == ']':
+            elif code == ']':
                 self.__bracket_pairs[parse_stack.pop()] = idx
 
         # print(self.__bracket_pairs)
 
         # 2.
         while True:
-            cell = self.__src[self.__pc]
-            print(self.__pc, cell)
+            code = self.__src[self.__pc]
+            print(self.__pc, code, self.__tp)
 
-            if cell == '>':
+            if code == '>':
                 self.gt()
-            elif cell == '<':
+            elif code == '<':
                 self.lt()
-            elif cell == '+':
+            elif code == '+':
                 self.plus()
-            elif cell == '-':
+            elif code == '-':
                 self.minus()
-            elif cell == ',':
+            elif code == ',':
                 self.comma()
-            elif cell == '.':
+            elif code == '.':
                 self.period()
-            elif cell == '[':
+            elif code == '[':
                 self.lbracket()
-            elif cell == ']':
+            elif code == ']':
                 self.rbracket()
-            elif cell == ';':
+            elif code == ';':
                 self.semicolon()
 
             self.__pc += 1
